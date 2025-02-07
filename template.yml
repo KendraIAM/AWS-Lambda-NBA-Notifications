@@ -1,0 +1,62 @@
+# This AWS SAM template has been generated from your function's configuration. If
+# your function has one or more triggers, note that the AWS resources associated
+# with these triggers aren't fully specified in this template and include
+# placeholder values. Open this template in AWS Infrastructure Composer or your
+# favorite IDE and modify it to specify a serverless application with other AWS
+# resources.
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: An AWS Serverless Application Model template describing your function.
+Resources:
+  gdnnotifications:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src
+      SourceKMSKeyArn: ''
+      Description: ''
+      MemorySize: 128
+      Timeout: 15
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.13
+      Architectures:
+        - x86_64
+      EphemeralStorage:
+        Size: 512
+      Environment:
+        Variables:
+          NBA_API_KEY: 1c686381023d43f5bf3b9af9fff62e2c
+          SNS_TOPIC_ARN: arn:aws:sns:us-east-1:188148830673:gdn_topic
+      EventInvokeConfig:
+        MaximumEventAgeInSeconds: 21600
+        MaximumRetryAttempts: 2
+      Layers:
+        - !Ref Layer1
+      PackageType: Zip
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - sns:Publish
+              Resource: arn:aws:sns:us-east-1:188148830673:gdn_topic
+            - Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: '*'
+      RecursiveLoop: Terminate
+      SnapStart:
+        ApplyOn: None
+      RuntimeManagementConfig:
+        UpdateRuntimeOn: Auto
+  # This resource represents your Layer with name requests-layer. To download
+# the content of your Layer, go to
+# 
+# aws.amazon.com/go/view?arn=arn%3Aaws%3Alambda%3Aus-east-1%3A188148830673%3Alayer%3Arequests-layer%3A1&source=lambda
+  Layer1:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: ./requests-layer
+      LayerName: requests-layer
+      CompatibleRuntimes:
+        - python3.13
