@@ -29,6 +29,7 @@ Before deploying the project, ensure you have the following:
 ## 📜 How It Works
 ### **Technical Architecture**
 Below is a VERY simple diagram of the technical architecture:
+'''
              +----------------------+
              |   AWS EventBridge     |
              |  (Daily Trigger)      |
@@ -62,6 +63,7 @@ Below is a VERY simple diagram of the technical architecture:
         |  Subscribers         |
         | (Email / SMS)        |
         +----------------------+
+'''
 
 1. **AWS EventBridge** triggers the **AWS Lambda function** daily.
 2. The function **fetches yesterday’s NBA scores** from **SportsData.io**.
